@@ -4,7 +4,7 @@ A novel benchmark for measuring instruction-following performance degradation as
 
 ## 🌐 Live Site
 
-Visit the benchmark leaderboard at: https://distyl.github.io
+Visit the benchmark leaderboard at: https://distylai.github.io
 
 ## 📋 About
 

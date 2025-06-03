@@ -15,7 +15,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #5c4ee7 0%, #5c4ee7 100%);
             min-height: 100vh;
         }
 
@@ -84,7 +84,7 @@
         }
 
         .leaderboard-table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #5c4ee7 0%, #5c4ee7 100%);
             color: white;
             padding: 15px;
             text-align: left;
@@ -103,6 +103,148 @@
         .leaderboard-table tr:hover {
             background: #e8f4fd;
             transition: background 0.3s ease;
+        }
+
+        .performance-value {
+            display: inline-block;
+        }
+
+        .std-dev {
+            font-size: 0.8em;
+            color: #666;
+            margin-left: 2px;
+        }
+
+        .pagination-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #5c4ee7 0%, #5c4ee7 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 1.1em;
+        }
+
+        .std-dev-category {
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+        }
+
+        .std-dev-low {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .std-dev-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .std-dev-high {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .table-navigation {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .arrow-btn {
+            background: linear-gradient(135deg, #5c4ee7 0%, #5c4ee7 100%);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .arrow-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .rank {
@@ -151,7 +293,7 @@
 
         .github-link a {
             display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #5c4ee7 0%, #5c4ee7 100%);
             color: white;
             padding: 12px 30px;
             text-decoration: none;
@@ -210,16 +352,19 @@
                 
                 <div class="features">
                     <div class="feature">
-                        <h3>🧠 Cognitive Load Testing</h3>
-                        <p>Systematic evaluation of performance degradation as instruction density increases from single to hundreds of simultaneous requirements.</p>
+                        <h3>🔬 Comprehensive Evaluation</h3>
+                        <p>Systematic evaluation revealing performance hierarchies and degradation patterns across state-of-the-art models, 
+                           addressing the critical gap in understanding high-density instruction scenarios.</p>
                     </div>
                     <div class="feature">
-                        <h3>📈 Degradation Patterns</h3>
-                        <p>Analysis of systematic performance drops, recency effects, and error type shifts under increased cognitive load.</p>
+                        <h3>📊 Multi-dimensional Analysis</h3>
+                        <p>Detailed exploration of standard deviation patterns, recency effects, error types, and curve patterns for all 
+                           models considered, highlighting standard patterns and outliers.</p>
                     </div>
                     <div class="feature">
-                        <h3>🔍 Multi-Provider Analysis</h3>
-                        <p>Comprehensive evaluation of 20 state-of-the-art models across seven major AI providers.</p>
+                        <h3>🎯 Density-Bench Framework</h3>
+                        <p>A novel benchmark designed to characterize how models handle increases in cognitive load, providing essential 
+                           insights for reliable deployment in complex, multi-instruction scenarios.</p>
                     </div>
                 </div>
             </div>
@@ -228,98 +373,131 @@
         <div class="content">
             <div class="section leaderboard">
                 <h2>🏆 Leaderboard</h2>
-                <p>Performance rankings based on instruction-following capability under varying cognitive loads. Scores represent performance retention at high instruction densities.</p>
-                
-                <table class="leaderboard-table">
+                <p>Performance rankings based on instruction-following capability under varying cognitive loads. Models are ranked by high density performance.</p>
+
+                <table class="leaderboard-table" id="leaderboardTable">
                     <thead>
                         <tr>
                             <th class="rank">Rank</th>
                             <th>Model</th>
                             <th>Organization</th>
-                            <th>Overall Score</th>
                             <th>Low Density</th>
                             <th>Medium Density</th>
                             <th>High Density</th>
-                            <th>Variance</th>
+                            <th>Std Dev</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td class="rank rank-1">🥇 1</td>
-                            <td><strong>Claude 3.5 Sonnet</strong></td>
-                            <td>Anthropic</td>
-                            <td class="score">87.4</td>
-                            <td>94.2</td>
-                            <td>89.1</td>
-                            <td>78.9</td>
-                            <td>Low</td>
-                        </tr>
-                        <tr>
-                            <td class="rank rank-2">🥈 2</td>
-                            <td><strong>GPT-4 Turbo</strong></td>
-                            <td>OpenAI</td>
-                            <td class="score">85.1</td>
-                            <td>92.8</td>
-                            <td>86.7</td>
-                            <td>75.8</td>
-                            <td>Medium</td>
-                        </tr>
-                        <tr>
-                            <td class="rank rank-3">🥉 3</td>
-                            <td><strong>o1-preview</strong></td>
-                            <td>OpenAI</td>
-                            <td class="score">82.9</td>
-                            <td>91.4</td>
-                            <td>84.2</td>
-                            <td>73.1</td>
-                            <td>High</td>
-                        </tr>
-                        <tr>
-                            <td class="rank">4</td>
-                            <td><strong>Gemini 1.5 Pro</strong></td>
-                            <td>Google</td>
-                            <td class="score">79.6</td>
-                            <td>88.9</td>
-                            <td>79.8</td>
-                            <td>70.1</td>
-                            <td>Medium</td>
-                        </tr>
-                        <tr>
-                            <td class="rank">5</td>
-                            <td><strong>Claude 3 Opus</strong></td>
-                            <td>Anthropic</td>
-                            <td class="score">77.3</td>
-                            <td>86.2</td>
-                            <td>77.9</td>
-                            <td>67.8</td>
-                            <td>Low</td>
-                        </tr>
-                        <tr>
-                            <td class="rank">6</td>
-                            <td><strong>Llama 3.1 405B</strong></td>
-                            <td>Meta</td>
-                            <td class="score">74.8</td>
-                            <td>83.6</td>
-                            <td>74.2</td>
-                            <td>66.6</td>
-                            <td>Medium</td>
-                        </tr>
+                    <tbody id="tableBody">
+                        <!-- Content will be populated by JavaScript -->
                     </tbody>
                 </table>
+                
+                <div class="table-navigation">
+                    <button class="arrow-btn" id="prevArrow" disabled>&lt;</button>
+                    <button class="arrow-btn" id="nextArrow">&gt;</button>
+                </div>
             </div>
         </div>
 
         <div class="github-link">
-            <a href="https://github.com/distyl/distyl.github.io" target="_blank">
+            <a href="https://github.com/distylai/distylai.github.io" target="_blank">
                 View on GitHub
             </a>
         </div>
     </div>
 
     <script>
-        // Add some interactive functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add hover effects to table rows
+        // Model data sorted by high density performance
+        const modelData = [
+            {rank: 1, model: "o3", org: "OpenAI", lowDensity: 98.8, mediumDensity: 89.5, highDensity: 80.4, stdDevs: [1.8, 9.3, 26.7]},
+            {rank: 2, model: "gemini-2.5-pro", org: "Google", lowDensity: 100.0, mediumDensity: 91.7, highDensity: 80.8, stdDevs: [0.0, 2.5, 15.9]},
+            {rank: 3, model: "o4-mini", org: "OpenAI", lowDensity: 99.6, mediumDensity: 87.4, highDensity: 61.8, stdDevs: [0.9, 7.5, 26.8]},
+            {rank: 4, model: "grok-3", org: "xAI", lowDensity: 99.2, mediumDensity: 85.8, highDensity: 59.5, stdDevs: [1.1, 3.2, 5.3]},
+            {rank: 5, model: "gpt-4.1", org: "OpenAI", lowDensity: 99.6, mediumDensity: 73.2, highDensity: 47.2, stdDevs: [0.9, 4.6, 3.3]},
+            {rank: 6, model: "claude-3.7-sonnet", org: "Anthropic", lowDensity: 98.8, mediumDensity: 75.8, highDensity: 46.1, stdDevs: [1.1, 3.9, 5.5]},
+            {rank: 7, model: "llama-4-maverick", org: "Meta", lowDensity: 85.6, mediumDensity: 51.7, highDensity: 46.1, stdDevs: [4.6, 44.3, 49.0]},
+            {rank: 8, model: "claude-opus-4", org: "Anthropic", lowDensity: 100.0, mediumDensity: 63.1, highDensity: 43.6, stdDevs: [0.0, 4.4, 6.7]},
+            {rank: 9, model: "claude-sonnet-4", org: "Anthropic", lowDensity: 97.6, mediumDensity: 78.1, highDensity: 39.8, stdDevs: [2.2, 13.8, 5.9]},
+            {rank: 10, model: "gpt-4.5", org: "OpenAI", lowDensity: 94.4, mediumDensity: 65.8, highDensity: 39.7, stdDevs: [2.6, 3.7, 2.7]},
+            {rank: 11, model: "gemini-2.5-flash", org: "Google", lowDensity: 96.8, mediumDensity: 59.8, highDensity: 38.3, stdDevs: [2.3, 5.7, 4.3]},
+            {rank: 12, model: "grok-3-mini", org: "xAI", lowDensity: 98.8, mediumDensity: 63.2, highDensity: 37.3, stdDevs: [1.1, 5.2, 5.6]},
+            {rank: 13, model: "deepseek-r1", org: "DeepSeek", lowDensity: 97.6, mediumDensity: 53.8, highDensity: 31.4, stdDevs: [2.6, 10.3, 6.7]},
+            {rank: 14, model: "gpt-4.1-mini", org: "OpenAI", lowDensity: 93.2, mediumDensity: 42.7, highDensity: 27.2, stdDevs: [5.4, 4.3, 3.3]},
+            {rank: 15, model: "qwen3", org: "Alibaba", lowDensity: 93.6, mediumDensity: 55.0, highDensity: 26.9, stdDevs: [6.7, 9.1, 8.9]},
+            {rank: 16, model: "gpt-4.1-nano", org: "OpenAI", lowDensity: 75.6, mediumDensity: 27.8, highDensity: 17.9, stdDevs: [3.3, 6.4, 2.3]},
+            {rank: 17, model: "gpt-4o", org: "OpenAI", lowDensity: 84.4, mediumDensity: 19.8, highDensity: 13.6, stdDevs: [5.2, 3.3, 2.0]},
+            {rank: 18, model: "gpt-4o-mini", org: "OpenAI", lowDensity: 66.0, mediumDensity: 18.9, highDensity: 11.5, stdDevs: [7.1, 1.1, 1.8]},
+            {rank: 19, model: "claude-3.5-haiku", org: "Anthropic", lowDensity: 84.8, mediumDensity: 17.2, highDensity: 8.7, stdDevs: [5.4, 0.7, 1.3]},
+            {rank: 20, model: "llama-4-scout", org: "Meta", lowDensity: 27.2, mediumDensity: 12.0, highDensity: 7.3, stdDevs: [30.2, 3.0, 0.9]}
+        ];
+
+        // Function to categorize standard deviation
+        function categorizeStdDev(stdDevs) {
+            const avgStdDev = stdDevs.reduce((a, b) => a + b, 0) / stdDevs.length;
+            if (avgStdDev <= 5) return "Low";
+            if (avgStdDev <= 15) return "Medium";
+            return "High";
+        }
+
+        // Function to get std dev class
+        function getStdDevClass(category) {
+            switch(category) {
+                case "Low": return "std-dev-low";
+                case "Medium": return "std-dev-medium";
+                case "High": return "std-dev-high";
+                default: return "std-dev-medium";
+            }
+        }
+
+        // Function to get rank display
+        function getRankDisplay(rank) {
+            if (rank === 1) return '<span class="rank-1">🥇 1</span>';
+            if (rank === 2) return '<span class="rank-2">🥈 2</span>';
+            if (rank === 3) return '<span class="rank-3">🥉 3</span>';
+            return rank;
+        }
+
+        // Pagination variables
+        let currentPage = 0;
+        const itemsPerPage = 10;
+        const totalPages = Math.ceil(modelData.length / itemsPerPage);
+
+        // Function to render table
+        function renderTable() {
+            const tableBody = document.getElementById('tableBody');
+            const startIndex = currentPage * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, modelData.length);
+            
+            tableBody.innerHTML = '';
+
+            for (let i = startIndex; i < endIndex; i++) {
+                const model = modelData[i];
+                const stdDevCategory = categorizeStdDev(model.stdDevs);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="rank">${getRankDisplay(model.rank)}</td>
+                    <td><strong>${model.model}</strong></td>
+                    <td>${model.org}</td>
+                    <td>${model.lowDensity}</td>
+                    <td>${model.mediumDensity}</td>
+                    <td class="score">${model.highDensity}</td>
+                    <td><span class="std-dev-category ${getStdDevClass(stdDevCategory)}">${stdDevCategory}</span></td>
+                `;
+                tableBody.appendChild(row);
+            }
+
+            // Update button states
+            document.getElementById('prevArrow').disabled = currentPage === 0;
+            document.getElementById('nextArrow').disabled = currentPage === totalPages - 1;
+
+            // Re-add hover effects to new rows
+            addRowHoverEffects();
+            addClickToCopyFunctionality();
+        }
+
+        // Function to add hover effects
+        function addRowHoverEffects() {
             const tableRows = document.querySelectorAll('.leaderboard-table tbody tr');
             tableRows.forEach(row => {
                 row.addEventListener('mouseenter', function() {
@@ -329,8 +507,10 @@
                     this.style.transform = 'scale(1)';
                 });
             });
+        }
 
-            // Add click-to-copy functionality for scores
+        // Function to add click-to-copy functionality
+        function addClickToCopyFunctionality() {
             const scores = document.querySelectorAll('.score');
             scores.forEach(score => {
                 score.style.cursor = 'pointer';
@@ -344,6 +524,27 @@
                     }, 1000);
                 });
             });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up pagination event listeners
+            document.getElementById('prevArrow').addEventListener('click', function() {
+                if (currentPage > 0) {
+                    currentPage--;
+                    renderTable();
+                }
+            });
+
+            document.getElementById('nextArrow').addEventListener('click', function() {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    renderTable();
+                }
+            });
+
+            // Initial render
+            renderTable();
         });
     </script>
 </body>
