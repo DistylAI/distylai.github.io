@@ -26,10 +26,49 @@
         }
 
         .header {
+            position: relative;
             text-align: center;
             color: white;
             margin-bottom: 40px;
             padding: 40px 0;
+        }
+
+        .distyl-logo-corner {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .distyl-logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .distyl-logo-link:hover {
+            opacity: 0.8;
+        }
+
+        .distyl-logo {
+            height: 40px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .main-title {
+            margin-top: 20px;
+        }
+
+        .main-title h1 {
+            font-size: 4em;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            letter-spacing: -0.02em;
         }
 
         .distyl-branding {
@@ -40,18 +79,14 @@
             margin-bottom: 20px;
         }
 
-        .distyl-logo {
-            height: 60px;
-            width: auto;
-            filter: brightness(0) invert(1);
-        }
-
         .distyl-branding h1 {
             font-size: 3.5em;
-            font-weight: 300;
+            font-weight: 400;
             margin: 0;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            letter-spacing: -0.02em;
         }
 
         .distyl-text {
@@ -337,17 +372,21 @@
         }
 
         @media (max-width: 768px) {
-            .distyl-branding h1 {
-                font-size: 2.5em;
+            .main-title h1 {
+                font-size: 2.8em;
             }
             
-            .distyl-branding {
-                flex-direction: column;
-                gap: 15px;
+            .distyl-logo-corner {
+                top: 15px;
+                left: 15px;
             }
             
             .distyl-logo {
-                height: 50px;
+                height: 35px;
+            }
+            
+            .main-title {
+                margin-top: 25px;
             }
             
             .distyl-text {
@@ -372,8 +411,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="distyl-branding">
-                <img src="DistylLogo.png" alt="Distyl Logo" class="distyl-logo">
+            <div class="distyl-logo-corner">
+                <a href="https://distyl.ai" target="_blank" class="distyl-logo-link" title="Visit Distyl">
+                    <img src="DistylLogo.png" alt="Distyl Logo" class="distyl-logo">
+                </a>
+            </div>
+            <div class="main-title">
                 <h1>Density-Bench</h1>
             </div>
             <p>Measuring Instruction Following Performance Under Cognitive Load</p>
