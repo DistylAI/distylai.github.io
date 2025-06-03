@@ -15,7 +15,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #5c4ee7 0%, #5c4ee7 100%);
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
             min-height: 100vh;
         }
 
@@ -32,10 +32,39 @@
             padding: 40px 0;
         }
 
+        .distyl-branding {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .distyl-logo {
+            height: 60px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .distyl-branding h1 {
+            font-size: 3.5em;
+            font-weight: 300;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        .distyl-text {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
         .header h1 {
             font-size: 3.5em;
             font-weight: 300;
-            margin-bottom: 10px;
+            margin: 0;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
@@ -57,7 +86,7 @@
         }
 
         .section h2 {
-            color: #4a5568;
+            color: #4c1d95;
             margin-bottom: 20px;
             font-size: 2em;
             font-weight: 600;
@@ -84,7 +113,7 @@
         }
 
         .leaderboard-table th {
-            background: linear-gradient(135deg, #5c4ee7 0%, #5c4ee7 100%);
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
             color: white;
             padding: 15px;
             text-align: left;
@@ -101,7 +130,7 @@
         }
 
         .leaderboard-table tr:hover {
-            background: #e8f4fd;
+            background: #e0e7ff;
             transition: background 0.3s ease;
         }
 
@@ -124,7 +153,7 @@
         }
 
         .nav-button {
-            background: linear-gradient(135deg, #5c4ee7 0%, #5c4ee7 100%);
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
             color: white;
             border: none;
             padding: 10px 20px;
@@ -139,7 +168,7 @@
 
         .nav-button:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
         }
 
         .nav-button:disabled {
@@ -149,7 +178,7 @@
 
         .page-info {
             font-weight: 600;
-            color: #4a5568;
+            color: #4c1d95;
             font-size: 1.1em;
         }
 
@@ -183,7 +212,7 @@
         }
 
         .arrow-btn {
-            background: linear-gradient(135deg, #5c4ee7 0%, #5c4ee7 100%);
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
             color: white;
             border: none;
             width: 40px;
@@ -200,7 +229,7 @@
 
         .arrow-btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
         }
 
         .arrow-btn:disabled {
@@ -234,8 +263,8 @@
         }
 
         .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
+            color: #8b5cf6;
+            border-bottom-color: #8b5cf6;
             background: #f8f9fa;
         }
 
@@ -259,7 +288,7 @@
 
         .score {
             font-weight: bold;
-            color: #4299e1;
+            color: #7c3aed;
         }
 
         .features {
@@ -273,11 +302,11 @@
             background: #f7fafc;
             padding: 20px;
             border-radius: 10px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #8b5cf6;
         }
 
         .feature h3 {
-            color: #4a5568;
+            color: #4c1d95;
             margin-bottom: 10px;
         }
 
@@ -293,7 +322,7 @@
 
         .github-link a {
             display: inline-block;
-            background: linear-gradient(135deg, #5c4ee7 0%, #5c4ee7 100%);
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
             color: white;
             padding: 12px 30px;
             text-decoration: none;
@@ -304,12 +333,25 @@
 
         .github-link a:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
         }
 
         @media (max-width: 768px) {
-            .header h1 {
+            .distyl-branding h1 {
                 font-size: 2.5em;
+            }
+            
+            .distyl-branding {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .distyl-logo {
+                height: 50px;
+            }
+            
+            .distyl-text {
+                font-size: 1.5em;
             }
             
             .section {
@@ -330,7 +372,10 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Density-Bench</h1>
+            <div class="distyl-branding">
+                <img src="DistylLogo.png" alt="Distyl Logo" class="distyl-logo">
+                <h1>Density-Bench</h1>
+            </div>
             <p>Measuring Instruction Following Performance Under Cognitive Load</p>
         </div>
 
@@ -409,8 +454,8 @@
     <script>
         // Model data sorted by high density performance
         const modelData = [
-            {rank: 1, model: "o3", org: "OpenAI", lowDensity: 98.8, mediumDensity: 89.5, highDensity: 80.4, stdDevs: [1.8, 9.3, 26.7]},
-            {rank: 2, model: "gemini-2.5-pro", org: "Google", lowDensity: 100.0, mediumDensity: 91.7, highDensity: 80.8, stdDevs: [0.0, 2.5, 15.9]},
+            {rank: 1, model: "gemini-2.5-pro", org: "Google", lowDensity: 100.0, mediumDensity: 91.7, highDensity: 80.8, stdDevs: [0.0, 2.5, 15.9]},
+            {rank: 2, model: "o3", org: "OpenAI", lowDensity: 98.8, mediumDensity: 89.5, highDensity: 80.4, stdDevs: [1.8, 9.3, 26.7]},
             {rank: 3, model: "o4-mini", org: "OpenAI", lowDensity: 99.6, mediumDensity: 87.4, highDensity: 61.8, stdDevs: [0.9, 7.5, 26.8]},
             {rank: 4, model: "grok-3", org: "xAI", lowDensity: 99.2, mediumDensity: 85.8, highDensity: 59.5, stdDevs: [1.1, 3.2, 5.3]},
             {rank: 5, model: "gpt-4.1", org: "OpenAI", lowDensity: 99.6, mediumDensity: 73.2, highDensity: 47.2, stdDevs: [0.9, 4.6, 3.3]},
