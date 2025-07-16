@@ -46,10 +46,14 @@ Coming soon!
 If you use IFScale in your research, please cite:
 
 ```bibtex
-@misc{density-bench-2024,
-  title={How Many Instructions Can LLMs Follow At Once?},
-  year={2025},
-  url={https://distyl.github.io/IFScale}
+@misc{jaroslawicz2025instructionsllmsfollowonce,
+    title={How Many Instructions Can LLMs Follow at Once?}, 
+    author={Daniel Jaroslawicz and Brendan Whiting and Parth Shah and Karime Maamari},
+    year={2025},
+    eprint={2507.11538},
+    archivePrefix={arXiv},
+    primaryClass={cs.AI},
+    url={https://arxiv.org/abs/2507.11538}, 
 }
 ```
 
