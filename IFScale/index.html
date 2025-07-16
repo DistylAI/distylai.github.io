@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFScale: Instruction Following at Scale</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter';
+            line-height: 1.6;
+            color: #333;
+            background: #170B2F;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .distyl-logo-corner {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .distyl-logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .distyl-logo-link:hover {
+            opacity: 0.8;
+        }
+
+        .distyl-logo {
+            height: 40px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .main-title {
+            margin-top: 20px;
+        }
+
+        .main-title h1 {
+            font-size: 4em;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: white;
+            font-family: 'Inter';
+            letter-spacing: -0.02em;
+        }
+
+        .distyl-branding {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .distyl-branding h1 {
+            font-size: 3.5em;
+            font-weight: 400;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: white;
+            font-family: 'Inter';
+            letter-spacing: -0.02em;
+        }
+
+        .distyl-text {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            font-weight: 300;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            padding: 40px;
+        }
+
+        .section h2 {
+            color: #4c1d95;
+            margin-bottom: 20px;
+            font-size: 2em;
+            font-weight: 600;
+        }
+
+        .section p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .leaderboard {
+            background: #f8f9fa;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .leaderboard-table th {
+            background: #CEBDEF;
+            color: #170B2F;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .leaderboard-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .leaderboard-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .leaderboard-table tr:hover {
+            background: #e0e7ff;
+            transition: background 0.3s ease;
+        }
+
+        .performance-value {
+            display: inline-block;
+        }
+
+        .std-dev {
+            font-size: 0.85em;
+            color: #888;
+            font-weight: normal;
+        }
+
+        .pagination-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+
+        .nav-button {
+            background: #CEBDEF;
+            color: #170B2F;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            font-weight: 600;
+            color: #4c1d95;
+            font-size: 1.1em;
+        }
+
+        .table-navigation {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .arrow-btn {
+            background: #CEBDEF;
+            color: #170B2F;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .arrow-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .footnote {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footnote p {
+            font-size: 0.9em;
+            color: #666;
+            margin: 0;
+            font-style: italic;
+        }
+
+        .viz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .view-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            background: #f5f5f5;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background: #e8e8e8;
+            color: #333;
+            border-color: #ccc;
+        }
+
+        .view-btn.active {
+            background: #170B2F;
+            color: #CEBDEF;
+            border-color: #170B2F;
+        }
+
+        .help-btn {
+            background: #CEBDEF;
+            color: #170B2F;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(206, 189, 239, 0.4);
+        }
+
+        .help-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .help-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .help-content h3 {
+            color: #4c1d95;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .help-content ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .help-content li {
+            margin: 8px 0;
+            color: #666;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .model-filter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-toggle {
+            background: #f8f9fa;
+            color: #666;
+            border: 1px solid #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .filter-toggle:hover {
+            background: #e9ecef;
+            color: #495057;
+            border-color: #ced4da;
+        }
+
+        .plot-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            margin: 20px 0;
+        }
+
+        .view-selector {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .view-toggle {
+            background: rgba(248, 249, 250, 0.9);
+            color: #666;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 6px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .view-toggle:hover {
+            background: rgba(233, 236, 239, 0.9);
+            color: #495057;
+        }
+
+        .view-toggle.active {
+            background: rgba(23, 11, 47, 0.9);
+            color: #CEBDEF;
+            border-color: rgba(23, 11, 47, 0.8);
+        }
+
+        .model-toggle {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(248, 249, 250, 0.7);
+            color: #555;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            padding: 2px 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.7em;
+            font-weight: 400;
+            z-index: 5;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .model-toggle:hover {
+            background: rgba(233, 236, 239, 0.8);
+            color: #333;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .tab.active {
+            color: #8b5cf6;
+            border-bottom-color: #8b5cf6;
+            background: #f8f9fa;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .rank {
+            width: 60px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .rank-1 { color: #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+
+        .score {
+            font-weight: bold;
+            color: #7c3aed;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .feature h3 {
+            color: #4c1d95;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .github-link {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .github-link a {
+            display: inline-block;
+            background: #CEBDEF;
+            color: #170B2F;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .github-link a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .main-title h1 {
+                font-size: 2.8em;
+            }
+            
+            .distyl-logo-corner {
+                top: 15px;
+                left: 15px;
+            }
+            
+            .distyl-logo {
+                height: 35px;
+            }
+            
+            .main-title {
+                margin-top: 25px;
+            }
+            
+            .distyl-text {
+                font-size: 1.5em;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .leaderboard-table {
+                font-size: 0.9em;
+            }
+            
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 10px;
+            }
+            
+            .plot-container {
+                height: 400px;
+            }
+            
+            .view-selector {
+                bottom: 10px;
+                right: 10px;
+                gap: 6px;
+            }
+            
+            .view-toggle {
+                padding: 4px 8px;
+                font-size: 0.75em;
+            }
+            
+            .model-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 3px 6px;
+                font-size: 0.75em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="distyl-logo-corner">
+                <a href="https://distyl.ai" target="_blank" class="distyl-logo-link" title="Visit Distyl">
+                    <img src="DistylLogo.png" alt="Distyl Logo" class="distyl-logo">
+                </a>
+            </div>
+            <div class="main-title">
+                <h1>IFScale</h1>
+            </div>
+            <p>Measuring Instruction Following Performance at Scale</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>About IFScale</h2>
+                <p>
+                    IFScale is a novel benchmark designed to evaluate large language model instruction-following performance 
+                    as the number of instructions increases. Real-world applications often demand adherence to dozens or hundreds 
+                    of simultaneous requirements and this is the first benchmark to measure instruction-following performance at scale. 
+                    The benchmark task is to generate a business report while including a list of keywords specified in the instructions.
+                </p>
+                <p>
+                    Our benchmark reveals 3 distinct performance degradation patterns, bias towards earlier instructions, 
+                    and distinct categories of instruction-following errors under the cognitive load of increasing instructions. We evaluate 
+                    20 state-of-the-art models across seven major providers, providing critical insights for reliable 
+                    deployment of LLMs in complex, multi-instruction scenarios.
+                </p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <h3>Comprehensive Evaluation</h3>
+                        <p>Systematic evaluation revealing performance hierarchies and degradation patterns across state-of-the-art models, 
+                           addressing the critical gap in understanding high-density instruction scenarios.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Multi-dimensional Analysis</h3>
+                        <p>Detailed exploration of standard deviation patterns, primacy effects, error types, and curve patterns for all 
+                           models considered, highlighting standard patterns and outliers.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>IFScale Framework</h3>
+                        <p>A novel benchmark designed to characterize how models perform under the cognitive load of increasing instructions,
+                            providing essential insights for reliable deployment in complex, multi-instruction scenarios.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                    <h2 style="margin: 0;">Interactive Visualization</h2>
+                    <button class="help-btn" id="helpBtn">?</button>
+                </div>
+                <p>Explore model performance across different instruction densities with our interactive plots. Switch between 3D and 2D views using the controls in the bottom-right corner.</p>
+                
+                <div class="plot-container">
+                    <button class="model-toggle" id="modelToggle">Top 5 Models</button>
+                    <div class="view-selector">
+                        <button class="view-toggle active" data-view="3d">3D</button>
+                        <button class="view-toggle" data-view="accuracy-instructions">Accuracy</button>
+                        <button class="view-toggle" data-view="latency-instructions">Latency</button>
+                    </div>
+                    <div id="interactive-plot" style="width: 100%; height: 100%;"></div>
+                </div>
+            </div>
+            
+            <!-- Help Modal -->
+            <div id="helpModal" class="help-modal">
+                <div class="help-content">
+                    <button class="close-btn" id="closeHelp">&times;</button>
+                    <h3>How to Use the Interactive Visualization</h3>
+                    <ul>
+                        <li><strong>View Selection:</strong> Use the buttons in bottom-right (3D, Accuracy, Latency) to switch views</li>
+                        <li><strong>3D View:</strong> Click and drag to rotate, mouse wheel to zoom</li>
+                        <li><strong>Model Filter:</strong> Click "Show All Models" (top-right) to toggle between top 5 and all models</li>
+                        <li><strong>Legend Interaction:</strong> Click model names in legends to show/hide specific models</li>
+                        <li><strong>Hover Details:</strong> Hover over points/lines for detailed information</li>
+                        <li><strong>Reset View:</strong> Double-click any plot to reset to default view</li>
+                    </ul>
+                    <p style="color: #666; margin-top: 15px; font-size: 0.9em;">
+                        The visualization defaults to showing the top 5 performing models. Switch between different views to explore various aspects of model performance across different instruction complexities.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="section leaderboard">
+                <h2>Leaderboard</h2>
+                <p>Performance rankings based on instruction-following capability under varying cognitive loads. Models are ranked by high density performance.</p>
+
+                <table class="leaderboard-table" id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th class="rank">Rank</th>
+                            <th>Model</th>
+                            <th>Organization</th>
+                            <th>10 Instructions</th>
+                            <th>50 Instructions</th>
+                            <th>100 Instructions</th>
+                            <th>250 Instructions</th>
+                            <th>500 Instructions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px; color: #666;">
+                                Loading data...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="table-navigation">
+                    <button class="arrow-btn" id="prevArrow" disabled>&lt;</button>
+                    <button class="arrow-btn" id="nextArrow">&gt;</button>
+                </div>
+                
+                <div class="footnote">
+                    <p>(r) indicates a hybrid model run with thinking enabled</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="github-link">
+            <a href="https://github.com/distylai/distylai.github.io" target="_blank">
+                View on GitHub
+            </a>
+            <a href="https://arxiv.org/pdf/2408.07702" target="_blank">
+                Paper on Arxiv
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Model data will be loaded dynamically from CSV
+        let modelData = [];
+
+        // Function to load and parse CSV data
+        async function loadCSVData() {
+            try {
+                const response = await fetch('results.csv');
+                const csvText = await response.text();
+                
+                // Parse CSV data
+                const lines = csvText.trim().split('\n');
+                const headers = lines[0].split(',');
+                
+                // Parse each row and create model objects
+                const parsedData = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (line) {
+                        const values = parseCSVLine(line);
+                        if (values.length >= 11) {
+                            const clean = (v) => parseFloat(v.replace('%', '').trim());
+
+                            const accuracies = [
+                                clean(values[1]),  // 10
+                                clean(values[2]),  // 50
+                                clean(values[3]),  // 100
+                                clean(values[4]),  // 250
+                                clean(values[5])   // 500
+                            ];
+
+                            const stdDevs = [
+                                clean(values[6]),  // 10 std.dev
+                                clean(values[7]),  // 50 std.dev
+                                clean(values[8]),  // 100 std.dev
+                                clean(values[9]),  // 250 std.dev
+                                clean(values[10])  // 500 std.dev
+                            ];
+
+                            const model = {
+                                model: values[0],
+                                accuracies,
+                                stdDevs,
+                                org: values[11] || 'Unknown',
+                                highDensity: accuracies[4] // for sorting (500 inst)
+                            };
+
+                            parsedData.push(model);
+                        }
+                    }
+                }
+                
+                // Sort by high density performance (descending)
+                parsedData.sort((a, b) => b.highDensity - a.highDensity);
+                
+                // Add ranks
+                parsedData.forEach((model, index) => {
+                    model.rank = index + 1;
+                });
+                
+                return parsedData;
+            } catch (error) {
+                console.error('Error loading CSV data:', error);
+                return [];
+            }
+        }
+
+        // Helper function to parse CSV line properly handling commas in quoted fields
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current.trim());
+            return result;
+        }
+
+        // Function to get rank display
+        function getRankDisplay(rank) {
+            if (rank === 1) return '<span class="rank-1">🥇 1</span>';
+            if (rank === 2) return '<span class="rank-2">🥈 2</span>';
+            if (rank === 3) return '<span class="rank-3">🥉 3</span>';
+            return rank;
+        }
+
+        // Pagination variables
+        let currentPage = 0;
+        const itemsPerPage = 10;
+
+        // Helper to format accuracy with std.dev
+        function formatAccuracyStdDev(acc, stdDev) {
+            return `${acc}% <span class="std-dev">±${stdDev}</span>`;
+        }
+
+        // Function to render table
+        function renderTable() {
+            const tableBody = document.getElementById('tableBody');
+            const startIndex = currentPage * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, modelData.length);
+            const totalPages = Math.ceil(modelData.length / itemsPerPage);
+            
+            tableBody.innerHTML = '';
+
+            for (let i = startIndex; i < endIndex; i++) {
+                const model = modelData[i];
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="rank">${getRankDisplay(model.rank)}</td>
+                    <td><strong>${model.model}</strong></td>
+                    <td>${model.org}</td>
+                    <td>${formatAccuracyStdDev(model.accuracies[0], model.stdDevs[0])}</td>
+                    <td>${formatAccuracyStdDev(model.accuracies[1], model.stdDevs[1])}</td>
+                    <td>${formatAccuracyStdDev(model.accuracies[2], model.stdDevs[2])}</td>
+                    <td>${formatAccuracyStdDev(model.accuracies[3], model.stdDevs[3])}</td>
+                    <td class="score">${formatAccuracyStdDev(model.accuracies[4], model.stdDevs[4])}</td>
+                `;
+                tableBody.appendChild(row);
+            }
+
+            // Update button states
+            document.getElementById('prevArrow').disabled = currentPage === 0;
+            document.getElementById('nextArrow').disabled = currentPage === totalPages - 1;
+
+            // Re-add hover effects to new rows
+            addRowHoverEffects();
+            addClickToCopyFunctionality();
+        }
+
+        // Function to add hover effects
+        function addRowHoverEffects() {
+            const tableRows = document.querySelectorAll('.leaderboard-table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.01)';
+                });
+                row.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        }
+
+        // Function to add click-to-copy functionality
+        function addClickToCopyFunctionality() {
+            const scores = document.querySelectorAll('.score');
+            scores.forEach(score => {
+                score.style.cursor = 'pointer';
+                score.title = 'Click to copy score';
+                score.addEventListener('click', function() {
+                    navigator.clipboard.writeText(this.textContent);
+                    const original = this.textContent;
+                    this.textContent = 'Copied!';
+                    setTimeout(() => {
+                        this.textContent = original;
+                    }, 1000);
+                });
+            });
+        }
+
+        // Global variables for visualization
+        let globalData = [];
+        let currentView = '3d';
+        let currentFilter = 'top5';
+        const topModels = ['gemini-2.5-pro-preview', 'o3-high-reasoning', 'grok-3-beta', 'claude-3.7-sonnet', 'claude-opus-4-high-reasoning'];
+        
+        // Load and parse CSV data
+        async function loadVisualizationData() {
+            try {
+                const response = await fetch('merged_accuracy_latency_data.csv');
+                const csvText = await response.text();
+                
+                const lines = csvText.trim().split('\n');
+                const data = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const values = lines[i].split(',');
+                    data.push({
+                        model: values[0],
+                        num_instructions: parseInt(values[1]),
+                        accuracy: parseFloat(values[2]),
+                        mean_latency: parseFloat(values[3])
+                    });
+                }
+                
+                // Group data by model
+                const modelGroups = {};
+                data.forEach(row => {
+                    const modelName = row.model.split('/').pop();
+                    if (!modelGroups[modelName]) {
+                        modelGroups[modelName] = [];
+                    }
+                    modelGroups[modelName].push(row);
+                });
+                
+                return modelGroups;
+            } catch (error) {
+                console.error('Error loading visualization data:', error);
+                return {};
+            }
+        }
+        
+        // Filter models based on current filter setting
+        function getFilteredModelGroups(modelGroups) {
+            if (currentFilter === 'top5') {
+                const filtered = {};
+                topModels.forEach(modelName => {
+                    if (modelGroups[modelName]) {
+                        filtered[modelName] = modelGroups[modelName];
+                    }
+                });
+                return filtered;
+            }
+            return modelGroups;
+        }
+
+        // Create 3D view
+        function create3DView(modelGroups) {
+            const filteredGroups = getFilteredModelGroups(modelGroups);
+            const traces = [];
+            const colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf', '#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5', '#c49c94', '#f7b6d3', '#c7c7c7', '#dbdb8d', '#9edae5', '#ff6b6b', '#4ecdc4', '#45b7d1'];
+            
+            Object.keys(filteredGroups).forEach((modelName, index) => {
+                const modelData = filteredGroups[modelName].sort((a, b) => a.num_instructions - b.num_instructions);
+                
+                traces.push({
+                    x: modelData.map(d => d.num_instructions),
+                    y: modelData.map(d => d.accuracy),
+                    z: modelData.map(d => d.mean_latency),
+                    mode: 'lines+markers',
+                    type: 'scatter3d',
+                    name: modelName,
+                    line: { color: colors[index % colors.length], width: 4 },
+                    marker: { size: 6, opacity: 0.8, color: colors[index % colors.length] },
+                    hovertemplate: '<b>%{fullData.name}</b><br>Instructions: %{x}<br>Accuracy: %{y:.1f}%<br>Latency: %{z:.2f}s<extra></extra>'
+                });
+            });
+            
+            const titleText = currentFilter === 'top5' ? 'Interactive 3D Plot - Top 5 Models' : 'Interactive 3D Plot - All Models';
+            
+            return {
+                data: traces,
+                layout: {
+                    title: { text: titleText, x: 0.5, font: { size: 18, color: '#4c1d95' } },
+                    scene: {
+                        xaxis: { title: 'Number of Instructions' },
+                        yaxis: { title: 'Accuracy (%)' },
+                        zaxis: { title: 'Mean Latency (seconds)' },
+                        camera: { eye: { x: 1.5, y: 1.5, z: 1.5 } }
+                    },
+                    legend: { x: 1.02, y: 1, bgcolor: 'rgba(255, 255, 255, 0.8)' },
+                    margin: { l: 0, r: 150, t: 80, b: 0 },
+                    height: 600
+                }
+            };
+        }
+        
+        // Create 2D view for Accuracy vs Instructions
+        function createAccuracyInstructionsView(modelGroups) {
+            const filteredGroups = getFilteredModelGroups(modelGroups);
+            const traces = [];
+            const colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf', '#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5', '#c49c94', '#f7b6d3', '#c7c7c7', '#dbdb8d', '#9edae5', '#ff6b6b', '#4ecdc4', '#45b7d1'];
+            
+            Object.keys(filteredGroups).forEach((modelName, index) => {
+                const modelData = filteredGroups[modelName].sort((a, b) => a.num_instructions - b.num_instructions);
+                
+                traces.push({
+                    x: modelData.map(d => d.num_instructions),
+                    y: modelData.map(d => d.accuracy),
+                    mode: 'lines+markers',
+                    type: 'scatter',
+                    name: modelName,
+                    line: { color: colors[index % colors.length], width: 3 },
+                    marker: { size: 8, color: colors[index % colors.length] },
+                    hovertemplate: '<b>%{fullData.name}</b><br>Instructions: %{x}<br>Accuracy: %{y:.1f}%<extra></extra>'
+                });
+            });
+            
+            const titleText = currentFilter === 'top5' ? 'Accuracy vs Number of Instructions - Top 5 Models' : 'Accuracy vs Number of Instructions - All Models';
+            
+            return {
+                data: traces,
+                layout: {
+                    title: { text: titleText, x: 0.5, font: { size: 18, color: '#4c1d95' } },
+                    xaxis: { title: 'Number of Instructions' },
+                    yaxis: { title: 'Accuracy (%)' },
+                    legend: { x: 1.02, y: 1, bgcolor: 'rgba(255, 255, 255, 0.8)' },
+                    margin: { l: 60, r: 150, t: 80, b: 60 },
+                    height: 600
+                }
+            };
+        }
+        
+        // Create 2D view for Latency vs Instructions
+        function createLatencyInstructionsView(modelGroups) {
+            const filteredGroups = getFilteredModelGroups(modelGroups);
+            const traces = [];
+            const colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf', '#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5', '#c49c94', '#f7b6d3', '#c7c7c7', '#dbdb8d', '#9edae5', '#ff6b6b', '#4ecdc4', '#45b7d1'];
+            
+            Object.keys(filteredGroups).forEach((modelName, index) => {
+                const modelData = filteredGroups[modelName].sort((a, b) => a.num_instructions - b.num_instructions);
+                
+                traces.push({
+                    x: modelData.map(d => d.num_instructions),
+                    y: modelData.map(d => d.mean_latency),
+                    mode: 'lines+markers',
+                    type: 'scatter',
+                    name: modelName,
+                    line: { color: colors[index % colors.length], width: 3 },
+                    marker: { size: 8, color: colors[index % colors.length] },
+                    hovertemplate: '<b>%{fullData.name}</b><br>Instructions: %{x}<br>Latency: %{y:.2f}s<extra></extra>'
+                });
+            });
+            
+            const titleText = currentFilter === 'top5' ? 'Latency vs Number of Instructions - Top 5 Models' : 'Latency vs Number of Instructions - All Models';
+            
+            return {
+                data: traces,
+                layout: {
+                    title: { text: titleText, x: 0.5, font: { size: 18, color: '#4c1d95' } },
+                    xaxis: { title: 'Number of Instructions' },
+                    yaxis: { title: 'Mean Latency (seconds)' },
+                    legend: { x: 1.02, y: 1, bgcolor: 'rgba(255, 255, 255, 0.8)' },
+                    margin: { l: 60, r: 150, t: 80, b: 60 },
+                    height: 600
+                }
+            };
+        }
+        
+        
+        // Render the current view
+        function renderCurrentView() {
+            if (!globalData || Object.keys(globalData).length === 0) {
+                document.getElementById('interactive-plot').innerHTML = 
+                    '<div style="display: flex; align-items: center; justify-content: center; height: 600px; color: #666; font-size: 18px;">' +
+                    'Loading visualization data...' +
+                    '</div>';
+                return;
+            }
+            
+            let plotData;
+            switch(currentView) {
+                case '3d':
+                    plotData = create3DView(globalData);
+                    break;
+                case 'accuracy-instructions':
+                    plotData = createAccuracyInstructionsView(globalData);
+                    break;
+                case 'latency-instructions':
+                    plotData = createLatencyInstructionsView(globalData);
+                    break;
+                default:
+                    plotData = create3DView(globalData);
+            }
+            
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                modeBarButtonsToRemove: ['pan2d', 'select2d', 'lasso2d', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian'],
+                displaylogo: false
+            };
+            
+            Plotly.newPlot('interactive-plot', plotData.data, plotData.layout, config);
+        }
+        
+        // Initialize visualization system
+        async function initializeVisualization() {
+            globalData = await loadVisualizationData();
+            renderCurrentView();
+            
+            // Set up view toggle handlers
+            document.querySelectorAll('.view-toggle').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.view-toggle').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentView = this.dataset.view;
+                    renderCurrentView();
+                });
+            });
+            
+            // Set up model toggle handler
+            const modelToggle = document.getElementById('modelToggle');
+            if (modelToggle) {
+                modelToggle.addEventListener('click', function() {
+                    if (currentFilter === 'top5') {
+                        currentFilter = 'all';
+                        this.textContent = 'All Models';
+                        this.style.background = 'rgba(233, 236, 239, 0.8)';
+                        this.style.color = '#333';
+                        this.style.borderColor = 'rgba(206, 212, 220, 0.8)';
+                    } else {
+                        currentFilter = 'top5';
+                        this.textContent = 'Top 5 Models';
+                        this.style.background = 'rgba(248, 249, 250, 0.7)';
+                        this.style.color = '#555';
+                        this.style.borderColor = 'rgba(226, 232, 240, 0.6)';
+                    }
+                    renderCurrentView();
+                });
+            }
+            
+            // Set up help modal handlers
+            const helpBtn = document.getElementById('helpBtn');
+            const helpModal = document.getElementById('helpModal');
+            const closeHelp = document.getElementById('closeHelp');
+            
+            helpBtn.addEventListener('click', () => helpModal.style.display = 'block');
+            closeHelp.addEventListener('click', () => helpModal.style.display = 'none');
+            helpModal.addEventListener('click', (e) => {
+                if (e.target === helpModal) helpModal.style.display = 'none';
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Load CSV data first
+            modelData = await loadCSVData();
+            
+            // Update pagination variables based on loaded data
+            const totalPages = Math.ceil(modelData.length / itemsPerPage);
+            
+            // Set up pagination event listeners
+            document.getElementById('prevArrow').addEventListener('click', function() {
+                if (currentPage > 0) {
+                    currentPage--;
+                    renderTable();
+                }
+            });
+
+            document.getElementById('nextArrow').addEventListener('click', function() {
+                const totalPages = Math.ceil(modelData.length / itemsPerPage);
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    renderTable();
+                }
+            });
+
+            // Initial render
+            renderTable();
+            
+            // Initialize the visualization system
+            await initializeVisualization();
+        });
+    </script>
+</body>
+</html> 
