@@ -1,0 +1,9 @@
+{% if banned_words %}
+### BANNED WORDS
+The following words are banned, do not generate any of these words:
+{{ banned_words }}
+
+Generate one new single-word lowercase business-jargon noun not on the banned list.
+{% else %}
+Generate one single-word lowercase business-jargon noun.
+{% endif %} 

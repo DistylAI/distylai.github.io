@@ -1,0 +1,29 @@
+{
+  "experiment_params": {
+    "min_samples": 10,
+    "max_samples": 100,
+    "num_seeds": 3,
+    "step_size": 10,
+    "max_concurrent_requests": 4
+  },
+  "models": [
+    {"name": "openai/gpt-4o-mini"}
+  ],
+  "reasoning_models": [],
+  "paths": {
+    "base_dir": null,
+    "results_dir": "outputs/results",
+    "default_rules_csv": "inputs/pruned_rules.csv"
+  },
+  "logging": {
+    "attempt_fieldnames": ["id", "model", "seed", "num_rules", "attempt", "status", "reason", "coherence_score", "timestamp"],
+    "generation_fieldnames": ["id", "model", "seed", "num_rules", "constraints", "generated_text", "latency_seconds", "coherence_score", "coherence_score_reasoning", "timestamp"]
+  },
+  
+  "api": {
+    "max_retries": 10,
+    "retry_delay_seconds": 3,
+    "min_word_count": 20,
+    "min_coherence_score": 6
+  }
+} 

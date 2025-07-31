@@ -1,0 +1,8 @@
+### FILING: {{ filename }}
+{{ text }}
+
+### INSTRUCTIONS
+Extract exactly {{ num_terms }} distinct lowercase business-relevant terms mentioned in the above filing. Return a JSON object with key "terms":
+{
+  "terms": ["term1", "term2", ..., "term{{ num_terms }}"]
+} 

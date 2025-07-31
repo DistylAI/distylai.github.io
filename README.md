@@ -39,7 +39,7 @@ Additionally, full results are available at IFScale_results.csv
 
 ## Running the Benchmark on Your Own Model
 
-Coming soon!
+To replicate our experiments, see the `src/` directory for the complete benchmark implementation. The `IFScale/` directory contains the website code for the live leaderboard.
 
 ## Citation
 
