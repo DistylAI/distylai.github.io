@@ -1,0 +1,22 @@
+venv/
+# *.csv
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyc
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Output/Results files
+outputs/
+results/

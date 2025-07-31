@@ -1,0 +1,11 @@
+### TASK
+You are a business-jargon extraction engine. 
+Your task is to extract exactly {{ num_terms }} distinct business-relevant words from the provided 10-K filing text. 
+Output only valid JSON with a single key "words" mapping to an array of lowercase business words. 
+Each term should be a **single word**, not a phrase.
+The words MUST come directly from the 10-K filing text. They should not be made up by you.
+Err towards selecting words from the text that are complex and not common, though they must be single words.
+Do not repeat the same word twice, every word should be unique and come from the 10-K filing text.
+IMPORTANT: You should only extract single words. Do not extract phrases and remove the spaces. Do not extract multiple words with the spaces removed. Do not extract multiple words hyphenated together. A single word only.
+
+The 10-K filing text is provided below:
