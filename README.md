@@ -37,7 +37,7 @@ We report accuracy averaged across 5 runs and variance at each density level at 
 
 Additionally, full results are available at IFScale_results.csv
 
-## Running the Benchmark on Your Own Model
+## Running the Benchmark
 
 To replicate our experiments, see the `src/` directory for the complete benchmark implementation. 
 
