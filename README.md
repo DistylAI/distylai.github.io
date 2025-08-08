@@ -39,7 +39,21 @@ Additionally, full results are available at IFScale_results.csv
 
 ## Running the Benchmark on Your Own Model
 
-To replicate our experiments, see the `src/` directory for the complete benchmark implementation. The `IFScale/` directory contains the website code for the live leaderboard.
+To replicate our experiments, see the `src/` directory for the complete benchmark implementation. 
+
+```bash
+# Install dependencies and activate virtual environment
+cd src
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Set the OPENROUTER_API_KEY
+export OPENROUTER_API_KEY="********"
+
+# Run full benchmark with default configuration
+python runner.py
+```
 
 ## Citation
 
